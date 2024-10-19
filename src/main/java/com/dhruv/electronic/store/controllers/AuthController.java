@@ -56,8 +56,8 @@ public class AuthController {
     @Autowired
     private JwtHelper helper;
 
-    @Value("${googleClientId}")
-    private String googleClientId;
+//    @Value("${googleClientId}")
+//    private String googleClientId;
     @Value("${newPassword}")
     private String newPassword;
 
@@ -97,42 +97,42 @@ public class AuthController {
 
     //login with google api
 
-    @PostMapping("/google")
-    public ResponseEntity<JwtResponse> loginWithGoogle(@RequestBody Map<String, Object> data) throws IOException {
-
-
-        //get the id token from request
-        String idToken = data.get("idToken").toString();
-
-        NetHttpTransport netHttpTransport = new NetHttpTransport();
-
-        JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
-
-        GoogleIdTokenVerifier.Builder verifier = new GoogleIdTokenVerifier.Builder(netHttpTransport, jacksonFactory).setAudience(Collections.singleton(googleClientId));
-
-
-        GoogleIdToken googleIdToken = GoogleIdToken.parse(verifier.getJsonFactory(), idToken);
-
-
-        GoogleIdToken.Payload payload = googleIdToken.getPayload();
-
-        logger.info("Payload : {}", payload);
-
-        String email = payload.getEmail();
-
-        User user = null;
-
-        user = userService.findUserByEmailOptional(email).orElse(null);
-
-        if (user == null) {
-            //create new user
-            user = this.saveUser(email, data.get("name").toString(), data.get("photoUrl").toString());
-        }
-        ResponseEntity<JwtResponse> jwtResponseResponseEntity = this.login(JwtRequest.builder().email(user.getEmail()).password(newPassword).build());
-        return jwtResponseResponseEntity;
-
-
-    }
+//    @PostMapping("/google")
+//    public ResponseEntity<JwtResponse> loginWithGoogle(@RequestBody Map<String, Object> data) throws IOException {
+//
+//
+//        //get the id token from request
+//        String idToken = data.get("idToken").toString();
+//
+//        NetHttpTransport netHttpTransport = new NetHttpTransport();
+//
+//        JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
+//
+//        GoogleIdTokenVerifier.Builder verifier = new GoogleIdTokenVerifier.Builder(netHttpTransport, jacksonFactory).setAudience(Collections.singleton(googleClientId));
+//
+//
+//        GoogleIdToken googleIdToken = GoogleIdToken.parse(verifier.getJsonFactory(), idToken);
+//
+//
+//        GoogleIdToken.Payload payload = googleIdToken.getPayload();
+//
+//        logger.info("Payload : {}", payload);
+//
+//        String email = payload.getEmail();
+//
+//        User user = null;
+//
+//        user = userService.findUserByEmailOptional(email).orElse(null);
+//
+//        if (user == null) {
+//            //create new user
+//            user = this.saveUser(email, data.get("name").toString(), data.get("photoUrl").toString());
+//        }
+//        ResponseEntity<JwtResponse> jwtResponseResponseEntity = this.login(JwtRequest.builder().email(user.getEmail()).password(newPassword).build());
+//        return jwtResponseResponseEntity;
+//
+//
+//    }
 
     private User saveUser(String email, String name, String photoUrl) {
 
