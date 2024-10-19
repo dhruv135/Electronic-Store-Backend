@@ -10,7 +10,7 @@
     </parent>
 
 
-    <groupId>com.lcwd.electronic.store</groupId>
+    <groupId>com.dhruv.electronic.store</groupId>
     <artifactId>ElectronicStore</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ElectronicStore</name>
